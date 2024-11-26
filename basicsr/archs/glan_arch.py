@@ -292,9 +292,13 @@ class MeanShift(nn.Conv2d):
 
 
 # PFAN: Progressive  Feature Aggregation Network
+#    n_feats : 64 for PFAN  32 for PFAN-tiny
+# n_resgroups: 10 for PFAN   6 for PFAN-tiny
+# we change the name 'GLAN' to 'PFAN'
+
 @ARCH_REGISTRY.register()
 class GLAN(nn.Module):
-    def __init__(self, n_resgroups=6, n_colors=3, n_feats=64, scale=4):
+    def __init__(self, n_resgroups=10, n_colors=3, n_feats=64, scale=4):
         super(GLAN, self).__init__()
 
         # res_scale = res_scale
