@@ -292,8 +292,8 @@ class MeanShift(nn.Conv2d):
 
 
 # PFAN: Progressive  Feature Aggregation Network
-#    n_feats : 64 for PFAN  32 for PFAN-tiny
-# n_resgroups: 10 for PFAN   6 for PFAN-tiny
+#    n_feats : 64 for PFAN  40 for PFAN-tiny
+# n_resgroups: 10 for PFAN   8 for PFAN-tiny
 # we change the name 'GLAN' to 'PFAN'
 
 @ARCH_REGISTRY.register()
