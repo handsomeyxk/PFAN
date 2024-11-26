@@ -1,0 +1,532 @@
+2023-08-02 09:55:28,664 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.4.1
+	PyTorch: 1.8.0
+	TorchVision: 0.9.0
+2023-08-02 09:55:28,664 INFO: 
+  name: GLAN_tiny_2_x4_val_test_908000
+  model_type: SRModel
+  scale: 4
+  num_gpu: 1
+  manual_seed: 0
+  datasets:[
+    test_1:[
+      name: Set5
+      type: PairedImageDataset
+      dataroot_gt: /home/YXK/datasets/benchmark/Set5/HR/
+      dataroot_lq: /home/YXK/datasets/benchmark/Set5/LR_bicubic/X4/
+      filename_tmpl: {}x4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+    test_2:[
+      name: Set14
+      type: PairedImageDataset
+      dataroot_gt: /home/YXK/datasets/benchmark/Set14/HR/
+      dataroot_lq: /home/YXK/datasets/benchmark/Set14/LR_bicubic/X4/
+      filename_tmpl: {}x4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+    test_3:[
+      name: BSD100
+      type: PairedImageDataset
+      dataroot_gt: /home/YXK/datasets/benchmark/B100/HR/
+      dataroot_lq: /home/YXK/datasets/benchmark/B100/LR_bicubic/X4/
+      filename_tmpl: {}x4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+    test_4:[
+      name: Urban100
+      type: PairedImageDataset
+      dataroot_gt: /home/YXK/datasets/benchmark/Urban100/HR/
+      dataroot_lq: /home/YXK/datasets/benchmark/Urban100/LR_bicubic/X4/
+      filename_tmpl: {}x4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+    test_5:[
+      name: Manga109
+      type: PairedImageDataset
+      dataroot_gt: /home/YXK/datasets/benchmark/Manga109/HR/
+      dataroot_lq: /home/YXK/datasets/benchmark/Manga109/LR_bicubic/X4/
+      filename_tmpl: {}x4
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+  ]
+  network_g:[
+    type: GLAN
+    n_colors: 3
+    n_feats: 40
+    n_resgroups: 8
+    scale: 4
+  ]
+  path:[
+    pretrain_network_g: /home/YXK/BasicSR/BasicSR-master/experiments/GLAN_tiny11_single mult_×4/models/net_g_908000.pth
+    strict_load_g: True
+    param_key_g: params_ema
+    results_root: /home/YXK/BasicSR/BasicSR-master/results/GLAN_tiny_2_x4_val_test_908000
+    log: /home/YXK/BasicSR/BasicSR-master/results/GLAN_tiny_2_x4_val_test_908000
+    visualization: /home/YXK/BasicSR/BasicSR-master/results/GLAN_tiny_2_x4_val_test_908000/visualization
+  ]
+  val:[
+    save_img: False
+    suffix: None
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 4
+        test_y_channel: True
+      ]
+      ssim:[
+        type: calculate_ssim
+        crop_border: 4
+        test_y_channel: True
+      ]
+    ]
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: False
+
+2023-08-02 09:55:28,666 INFO: Dataset [PairedImageDataset] - Set5 is built.
+2023-08-02 09:55:28,666 INFO: Number of test images in Set5: 5
+2023-08-02 09:55:28,667 INFO: Dataset [PairedImageDataset] - Set14 is built.
+2023-08-02 09:55:28,667 INFO: Number of test images in Set14: 14
+2023-08-02 09:55:28,672 INFO: Dataset [PairedImageDataset] - BSD100 is built.
+2023-08-02 09:55:28,672 INFO: Number of test images in BSD100: 100
+2023-08-02 09:55:28,677 INFO: Dataset [PairedImageDataset] - Urban100 is built.
+2023-08-02 09:55:28,677 INFO: Number of test images in Urban100: 100
+2023-08-02 09:55:28,682 INFO: Dataset [PairedImageDataset] - Manga109 is built.
+2023-08-02 09:55:28,682 INFO: Number of test images in Manga109: 109
+2023-08-02 09:55:28,702 INFO: Network [GLAN] is created.
+2023-08-02 09:55:35,012 INFO: Network: GLAN, with parameters: 335,952
+2023-08-02 09:55:35,012 INFO: GLAN(
+  (sub_mean): MeanShift(3, 3, kernel_size=(1, 1), stride=(1, 1))
+  (head): Conv2d(3, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (body): ModuleList(
+    (0): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (1): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (2): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (3): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (4): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (5): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (6): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (7): MAB(
+      (HAB): HAB(
+        (norm): LayerNorm()
+        (conv_first): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (PFCA): PFCA(
+          (avg_pool): AdaptiveAvgPool2d(output_size=1)
+          (sigmoid): Sigmoid()
+        )
+        (PFSA): PFSA(
+          (sigmoid): Sigmoid()
+        )
+        (X7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+        (conv_last): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (sigmoid): Sigmoid()
+      )
+      (LFE): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (LKA): GroupGLKA(
+        (norm): LayerNorm()
+        (LKA7): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(9, 9), dilation=(3, 3), groups=40)
+        (LKA5): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(4, 4), dilation=(2, 2), groups=40)
+        (conv2): Conv2d(40, 40, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=40)
+        (conv3): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(4, 4), groups=40)
+        (conv4): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv5): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        (conv6): Conv2d(80, 40, kernel_size=(1, 1), stride=(1, 1))
+        (atten): LKA(
+          (conv0): Conv2d(40, 40, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=40)
+          (conv_spatial): Conv2d(40, 40, kernel_size=(9, 9), stride=(1, 1), padding=(16, 16), dilation=(4, 4), groups=40)
+          (conv1): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (act1): Hardswish()
+        (act2): Tanh()
+      )
+      (LFE1): MLP(
+        (norm): LayerNorm()
+        (fc1): Conv2d(40, 80, kernel_size=(1, 1), stride=(1, 1))
+        (act): SimpleGate()
+        (fc2): Conv2d(40, 40, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (body_t): Conv2d(40, 40, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (tail): Sequential(
+    (0): Conv2d(40, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): PixelShuffle(upscale_factor=4)
+  )
+  (add_mean): MeanShift(3, 3, kernel_size=(1, 1), stride=(1, 1))
+)
+2023-08-02 09:55:35,095 INFO: Loading GLAN model from /home/YXK/BasicSR/BasicSR-master/experiments/GLAN_tiny11_single mult_×4/models/net_g_908000.pth, with param key: [params_ema].
+2023-08-02 09:55:36,211 INFO: Model [SRModel] is created.
+2023-08-02 09:55:36,211 INFO: Testing Set5...
+2023-08-02 09:55:39,462 INFO: Validation Set5
+	 # psnr: 32.2942	Best: 32.2942 @ GLAN_tiny_2_x4_val_test_908000 iter
+	 # ssim: 0.8960	Best: 0.8960 @ GLAN_tiny_2_x4_val_test_908000 iter
+
+2023-08-02 09:55:39,462 INFO: Testing Set14...
+2023-08-02 09:55:43,491 INFO: Validation Set14
+	 # psnr: 28.7184	Best: 28.7184 @ GLAN_tiny_2_x4_val_test_908000 iter
+	 # ssim: 0.7843	Best: 0.7843 @ GLAN_tiny_2_x4_val_test_908000 iter
+
+2023-08-02 09:55:43,495 INFO: Testing BSD100...
+2023-08-02 09:55:53,707 INFO: Validation BSD100
+	 # psnr: 27.6517	Best: 27.6517 @ GLAN_tiny_2_x4_val_test_908000 iter
+	 # ssim: 0.7386	Best: 0.7386 @ GLAN_tiny_2_x4_val_test_908000 iter
+
+2023-08-02 09:55:53,707 INFO: Testing Urban100...
+2023-08-02 09:56:39,202 INFO: Validation Urban100
+	 # psnr: 26.2755	Best: 26.2755 @ GLAN_tiny_2_x4_val_test_908000 iter
+	 # ssim: 0.7920	Best: 0.7920 @ GLAN_tiny_2_x4_val_test_908000 iter
+
+2023-08-02 09:56:39,205 INFO: Testing Manga109...
+2023-08-02 09:57:25,727 INFO: Validation Manga109
+	 # psnr: 30.7522	Best: 30.7522 @ GLAN_tiny_2_x4_val_test_908000 iter
+	 # ssim: 0.9117	Best: 0.9117 @ GLAN_tiny_2_x4_val_test_908000 iter
+
