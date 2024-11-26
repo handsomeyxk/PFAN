@@ -1,0 +1,117 @@
+# TODO
+# general settings
+name: PFAN_DF2K_single mult_×3
+model_type: SRModel
+scale: 3
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+manual_seed: 10
+# A100 div2k
+# dataset and data loader settings
+datasets:
+  train:
+    name: DF2K
+    type: PairedImageDataset
+    dataroot_gt: /home/YXK/datasets/DF2K_sub/DF2K_train_HR_sub/
+    dataroot_lq: /home/YXK/datasets/DF2K_sub/DF2K_train_LR_bicubic/X3_sub/
+    meta_info_file: /home/YXK/datasets/DF2K_sub/DF2K_sub.txt
+    filename_tmpl: '{}x3'
+    io_backend:
+      type: disk
+      # (for lmdb)
+      # type: lmdb
+
+    gt_size: 192
+    use_hflip: true
+    use_rot: true
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 6
+    batch_size_per_gpu: 32
+    dataset_enlarge_ratio: 100
+    prefetch_mode: ~
+
+  val:
+    name: Set5
+    type: PairedImageDataset
+    dataroot_gt: /home/YXK/datasets/Set5/HR/
+    dataroot_lq: /home/YXK/datasets/Set5/LR_bicubic/X3/
+    filename_tmpl: '{}x3'
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: GLAN
+  n_colors: 3
+  n_feats: 64
+  n_resgroups: 10
+  scale: 3
+## PFAN: Progressive  Feature Aggregation Network
+##    n_feats : 64 for PFAN  32 for PFAN-tiny
+## n_resgroups: 10 for PFAN   6 for PFAN-tiny
+## we change the name 'GLAN' to 'PFAN'
+# path
+path:
+  pretrain_network_g: ~
+  strict_load_g: true
+  resume_state: ~
+
+# training settings
+train:
+  ema_decay: 0.999
+  optim_g:
+    type: Adam
+    lr: !!float 5e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+
+  scheduler:
+#    type: MultiStepLR
+#    milestones: [500000, 800000, 1000000, 1200000]
+#    gamma: 0.5
+
+    type: CosineAnnealingRestartLR
+    periods: [1600000]
+    restart_weights: [1]
+    eta_min: !!float 1e-7
+
+  total_iter: 1600000
+  warmup_iter: -1  # no warm up
+
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+
+# validation settings
+val:
+  val_freq: 2000
+  save_img: false
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 3
+      test_y_channel: true
+      better: higher
+    ssim:
+      type: calculate_ssim
+      crop_border: 3
+      test_y_channel: true
+      better: higher  # the higher, the better. Default: higher
+
+# logging settings
+logger:
+  print_freq: 100
+  save_checkpoint_freq: 2000
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+    entity: ~
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500

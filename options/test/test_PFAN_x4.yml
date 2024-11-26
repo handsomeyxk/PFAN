@@ -1,0 +1,88 @@
+name: PFAN_x4_test
+model_type: SRModel
+scale: 4
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+manual_seed: 0
+
+datasets:
+  test_1:  # the 1st test dataset
+    name: Set5
+    type: PairedImageDataset
+    dataroot_gt: /home/YXK/datasets/benchmark/Set5/HR/
+    dataroot_lq: /home/YXK/datasets/benchmark/Set5/LR_bicubic/X4/
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+  test_2:  # the 2nd test dataset
+    name: Set14
+    type: PairedImageDataset
+    dataroot_gt: /home/YXK/datasets/benchmark/Set14/HR/
+    dataroot_lq: /home/YXK/datasets/benchmark/Set14/LR_bicubic/X4/
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+
+  test_3:
+    name: BSD100
+    type: PairedImageDataset
+    dataroot_gt: /home/YXK/datasets/benchmark/B100/HR/
+    dataroot_lq: /home/YXK/datasets/benchmark/B100/LR_bicubic/X4/
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+
+  test_4:
+    name: Urban100
+    type: PairedImageDataset
+    dataroot_gt: /home/YXK/datasets/benchmark/Urban100/HR/
+    dataroot_lq: /home/YXK/datasets/benchmark/Urban100/LR_bicubic/X4/
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+
+  test_5:
+    name: Manga109
+    type: PairedImageDataset
+    dataroot_gt: /home/YXK/datasets/benchmark/Manga109/HR/
+    dataroot_lq: /home/YXK/datasets/benchmark/Manga109/LR_bicubic/X4/
+    filename_tmpl: '{}x4'
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: GLAN
+  n_colors: 3
+  n_feats: 64
+  n_resgroups: 10
+  scale: 4
+## PFAN: Progressive  Feature Aggregation Network
+##    n_feats : 64 for PFAN  32 for PFAN-tiny
+## n_resgroups: 10 for PFAN   6 for PFAN-tiny
+## we change the name 'GLAN' to 'PFAN'
+
+# path
+path:
+  pretrain_network_g: experiments/PFAN_SR_4.pth
+  strict_load_g: true
+  param_key_g: 'params_ema'
+
+# validation settings
+val:
+  save_img: true
+  suffix: ~  # add suffix to saved images, if None, use exp name
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 4
+      test_y_channel: true
+    ssim:
+      type: calculate_ssim
+      crop_border: 4
+      test_y_channel: true
+
+
+
+
+
